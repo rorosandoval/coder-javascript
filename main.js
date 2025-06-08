@@ -12,7 +12,7 @@
 8 Despedida
 */
 
-const contrasena = "2025";
+/* const contrasena = "2025";
 
 let contrasenaIngresada = prompt("Para entrar a nuestra tienda debes ingresar la contraseña 🧐");
 
@@ -138,4 +138,155 @@ function despedida() {
     alert("¡Nos vemos pronto! 👋🏻");
   }
 console.log("¡Nos vemos pronto!");
-despedida();
+despedida(); */
+
+//
+const nombreInput = document.getElementById("nombreInput");
+const entrarTienda = document.getElementById("entrarTienda");
+const mensajePersonalizado = document.getElementById("mensajePersonalizado");
+const contenido = document.getElementById("contenido");
+const grillaProductos = document.getElementById("productos");
+
+const catalogoProductos = [
+  {
+    producto: 1,
+    nombre: "Monitor 24 pulgadas - Xiaomi",
+    precio: 120000,
+  },
+  {
+    producto: 2,
+    nombre: "Teclado Gamer - Logitech",
+    precio: 110000,
+  },
+  {
+    producto: 3,
+    nombre: "Mouse vertical ergonómico - Logitech",
+    precio: 70000,
+  },
+  {
+    producto: 4,
+    nombre: "Mouse Pad Gamer 120cm - HP",
+    precio: 25000,
+  },
+];
+
+
+
+function renderizarProductos() {
+  grillaProductos.innerHTML = `<div class="container">
+    <button onclick="ordenarPorPrecioAsc()">Precios de menor a mayor</button>
+    <button onclick="ordenarPorPrecioDesc()">Precios de mayor a menor</button>
+</div>`;
+  catalogoProductos.forEach((producto) => {
+    grillaProductos.innerHTML += `
+    <div class="card-1" >
+        <h3>${producto.nombre}</h3>
+        <p>$${producto.precio}</p>
+         <button onclick='agregarAlCarrito("${producto.nombre}", ${producto.precio})'>Agregar al Carrito</button>
+    </div>`;
+  });
+}
+
+entrarTienda.onclick = () => {
+  const nombreIngresado = nombreInput.value;
+  mensajePersonalizado.innerText = `¡Bienvenid@, ${nombreIngresado} a nuestra tienda! ✌🏼`;
+
+  if (!document.getElementById("mostrarCatalogo")) {
+    contenido.innerHTML += `<p>Aquí encontrarás lo que estás buscando para trabajar desde casa 😁</p><button id="mostrarCatalogo">Revisa nuestro catálogo</button>`;
+
+    const mostrarCatalogo = document.getElementById("mostrarCatalogo");
+    mostrarCatalogo.onclick = () => {
+      renderizarProductos();
+      if (!document.getElementById("esconderCatalogo")) {
+        productos.innerHTML += `<div class="container">
+    <button id="esconderCatalogo">Esconder catálogo</button>
+</div>`;
+      }
+      const esconderCatalogo = document.getElementById("esconderCatalogo");
+      esconderCatalogo.onclick = () => {
+        productos.innerHTML = "";
+      };
+    };
+  }
+};
+
+
+
+//ordenamiento de precios - ascendente y descendente
+function ordenarPorPrecioAsc() {
+  catalogoProductos.sort((a, b) => a.precio - b.precio);
+  renderizarProductos();
+  if (!document.getElementById("esconderCatalogo")) {
+    productos.innerHTML += `<div class="container">
+    <button id="esconderCatalogo">Esconder catálogo</button>
+</div>`;
+  }
+  const esconderCatalogo = document.getElementById("esconderCatalogo");
+  esconderCatalogo.onclick = () => {
+    productos.innerHTML = "";
+  };
+}
+
+const carrito = [];
+
+function ordenarPorPrecioDesc() {
+  catalogoProductos.sort((a, b) => b.precio - a.precio);
+  renderizarProductos();
+  if (!document.getElementById("esconderCatalogo")) {
+    productos.innerHTML += `<div class="container">
+    <button id="esconderCatalogo">Esconder catálogo</button>
+</div>`;
+  }
+  const esconderCatalogo = document.getElementById("esconderCatalogo");
+  esconderCatalogo.onclick = () => {
+    productos.innerHTML = "";
+  };
+}
+
+
+function agregarAlCarrito(nombreProducto, precioProducto) {
+  if (carrito[nombreProducto]) {
+    carrito[nombreProducto].cantidad += 1;
+    carrito[nombreProducto].precioTotal += precioProducto;
+  } else {
+    carrito[nombreProducto] = {
+      cantidad: 1,
+      precioTotal: precioProducto,
+    };
+  }
+
+  actualizarCarrito();
+}
+
+function eliminarDelCarrito(nombreProducto) {
+  if (carrito[nombreProducto]) {
+    carrito[nombreProducto].cantidad -= 1;
+    carrito[nombreProducto].precioTotal -= catalogoProductos.find(producto => producto.nombre === nombreProducto).precio;
+    if (carrito[nombreProducto].cantidad <= 0) {
+      delete carrito[nombreProducto];
+    }
+    actualizarCarrito();
+  }
+}
+
+function actualizarCarrito() {
+  const mostrar = document.getElementById('mostrarCarrito');
+  mostrar.innerHTML = `<div class="container py-3">
+        <h2 >Tu Carrito </h2>
+        </div>` ;
+let total = 0
+
+  for (const nombre in carrito) {
+    const item = carrito[nombre];
+    mostrar.innerHTML += `<div class="container">
+    <p>${item.cantidad} unidades ${nombre} = $${item.precioTotal}</p>
+    <button onclick="eliminarDelCarrito('${nombre}')">Eliminar</button>
+    </div>`;
+    total += item.precioTotal;
+  }
+  mostrar.innerHTML += `<div class="container"><p>Total: $${total}</p></div>`;
+}
+
+
+
+
