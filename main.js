@@ -210,9 +210,6 @@ entrarTienda.onclick = () => {
   }
 };
 
-
-
-//ordenamiento de precios - ascendente y descendente
 function ordenarPorPrecioAsc() {
   catalogoProductos.sort((a, b) => a.precio - b.precio);
   renderizarProductos();
