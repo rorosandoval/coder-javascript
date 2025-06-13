@@ -21,22 +21,38 @@
 
     <header>
         <div class="container py-3">
-        <h1 id="mensajePersonalizado">¡Bienvenid@ a nuestra tienda! ✌🏼</h1>
+            <h1 id="mensajePersonalizado">¡Bienvenid@ a nuestra tienda! ✌🏼</h1>
         </div>
     </header>
 
     <main>
-        <div class="container d-flex flex-column  py-3 ">
-        <label for="nombreInput">Ingresa tu nombre:</label>
-        <input type="text" id="nombreInput" placeholder="Juan Perez">
-        <button id="entrarTienda">Entrar</button>
+        <!--Intro-->
+        <div class=" container d-flex flex-column  py-3 intro">
+            <label for="nombreInput">Ingresa tu nombre:</label>
+            <input type="text" id="nombreInput" placeholder="Juan Perez">
+            <button id="entrarTienda" class="my-3">Entrar</button>
         </div>
 
+        <!--Contenido y botón para mostrar carrito-->
         <div class="container" id="contenido">
         </div>
-        <div class="container grilla" id="productos">
+
+        <div class="container">
+            <div class="row">
+                <!--Grilla de productos-->
+                <div class="col-md-9">
+                    <div class="grilla" id="productos">
+                    </div>
+                </div>
+                <!--Carrito de compras-->
+                <div class="col-6 col-md-3">
+                    <div id="mostrarCarrito"></div>
+                    <div id="detalleCarrito">
+                      
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="mostrarCarrito"></div>
 
     </main>
 
@@ -50,6 +66,8 @@
 
     <!--Script-->
     <script src="main.js"></script>
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 </body>
 
 </html>

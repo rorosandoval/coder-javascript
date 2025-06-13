@@ -152,45 +152,54 @@ const catalogoProductos = [
     producto: 1,
     nombre: "Monitor 24 pulgadas - Xiaomi",
     precio: 120000,
+    imagen: "img/monitor.avif"
   },
   {
     producto: 2,
     nombre: "Teclado Gamer - Logitech",
     precio: 110000,
+    imagen: "img/teclado.jpg"
   },
   {
     producto: 3,
     nombre: "Mouse vertical ergonómico - Logitech",
     precio: 70000,
+    imagen: "img/mouse.webp"
   },
   {
     producto: 4,
     nombre: "Mouse Pad Gamer 120cm - HP",
     precio: 25000,
+    imagen: "img/mouse-pad.webp"
   },
 ];
 
+let carrito = {};
 
+const usuarioGuardado = localStorage.getItem("nombreDeUsuario");
+if (usuarioGuardado) {
+  nombreInput.value = usuarioGuardado;
+  mensajePersonalizado.innerText = `¡${usuarioGuardado}, bienvenid@ nuevamente a nuestra tienda!✌🏼`
+} else {
+  mensajePersonalizado.innerText = `¡Bienvenid@ a nuestra tienda!✌🏼`
+}
 
-function renderizarProductos() {
-  grillaProductos.innerHTML = `<div class="container">
-    <button onclick="ordenarPorPrecioAsc()">Precios de menor a mayor</button>
-    <button onclick="ordenarPorPrecioDesc()">Precios de mayor a menor</button>
-</div>`;
-  catalogoProductos.forEach((producto) => {
-    grillaProductos.innerHTML += `
-    <div class="card-1" >
-        <h3>${producto.nombre}</h3>
-        <p>$${producto.precio}</p>
-         <button onclick='agregarAlCarrito("${producto.nombre}", ${producto.precio})'>Agregar al Carrito</button>
-    </div>`;
-  });
+const carritoGuardado = JSON.parse(localStorage.getItem("carritoDeCompra"));
+if (carritoGuardado){
+  carrito = carritoGuardado;
+  actualizarCarrito();
 }
 
 entrarTienda.onclick = () => {
   const nombreIngresado = nombreInput.value;
-  mensajePersonalizado.innerText = `¡Bienvenid@, ${nombreIngresado} a nuestra tienda! ✌🏼`;
-
+  if (nombreIngresado){
+    nombreInput.value = nombreIngresado;
+    mensajePersonalizado.innerText = `¡${nombreIngresado}, hoy es un buen día para comprar! 😎`;
+  localStorage.setItem("nombreDeUsuario", nombreIngresado);
+  }else {
+    mensajePersonalizado.innerText = `¡Hoy es un buen día para comprar! 😎`
+  }
+  
   if (!document.getElementById("mostrarCatalogo")) {
     contenido.innerHTML += `<p>Aquí encontrarás lo que estás buscando para trabajar desde casa 😁</p><button id="mostrarCatalogo">Revisa nuestro catálogo</button>`;
 
@@ -210,6 +219,26 @@ entrarTienda.onclick = () => {
   }
 };
 
+
+
+function renderizarProductos() {
+  grillaProductos.innerHTML = `<div class="container d-flex justify-content-between d-grid gap-3 btn-ascc-desc">
+    <button onclick="ordenarPorPrecioAsc()">Precios de menor a mayor</button>
+    <button onclick="ordenarPorPrecioDesc()">Precios de mayor a menor</button>
+</div>`;
+  catalogoProductos.forEach((producto) => {
+    grillaProductos.innerHTML += `
+    <div class="card-1" >
+      <img src="${producto.imagen}" alt="${producto.nombre}">
+        <h3>${producto.nombre}</h3>
+        <p>$${producto.precio}</p>
+         <button onclick='agregarAlCarrito("${producto.nombre}", ${producto.precio})'>Agregar al Carrito</button>
+    </div>`;
+  });
+}
+
+
+
 function ordenarPorPrecioAsc() {
   catalogoProductos.sort((a, b) => a.precio - b.precio);
   renderizarProductos();
@@ -224,7 +253,6 @@ function ordenarPorPrecioAsc() {
   };
 }
 
-const carrito = [];
 
 function ordenarPorPrecioDesc() {
   catalogoProductos.sort((a, b) => b.precio - a.precio);
@@ -239,7 +267,6 @@ function ordenarPorPrecioDesc() {
     productos.innerHTML = "";
   };
 }
-
 
 function agregarAlCarrito(nombreProducto, precioProducto) {
   if (carrito[nombreProducto]) {
@@ -258,7 +285,9 @@ function agregarAlCarrito(nombreProducto, precioProducto) {
 function eliminarDelCarrito(nombreProducto) {
   if (carrito[nombreProducto]) {
     carrito[nombreProducto].cantidad -= 1;
-    carrito[nombreProducto].precioTotal -= catalogoProductos.find(producto => producto.nombre === nombreProducto).precio;
+    carrito[nombreProducto].precioTotal -= catalogoProductos.find(
+      (producto) => producto.nombre === nombreProducto
+    ).precio;
     if (carrito[nombreProducto].cantidad <= 0) {
       delete carrito[nombreProducto];
     }
@@ -267,11 +296,11 @@ function eliminarDelCarrito(nombreProducto) {
 }
 
 function actualizarCarrito() {
-  const mostrar = document.getElementById('mostrarCarrito');
+  const mostrar = document.getElementById("mostrarCarrito");
   mostrar.innerHTML = `<div class="container py-3">
-        <h2 >Tu Carrito </h2>
-        </div>` ;
-let total = 0
+        <h2>Tu Carrito </h2>
+        </div>`;
+  let total = 0;
 
   for (const nombre in carrito) {
     const item = carrito[nombre];
@@ -280,10 +309,51 @@ let total = 0
     <button onclick="eliminarDelCarrito('${nombre}')">Eliminar</button>
     </div>`;
     total += item.precioTotal;
+    localStorage.setItem("carritoDeCompra", JSON.stringify(carrito));
   }
-  mostrar.innerHTML += `<div class="container"><p>Total: $${total}</p></div>`;
+  
+  mostrar.innerHTML += `<div class="container py-3 total"><p class="total">Total: $${total}</p></div>`;
+
+  if (total > 0) {
+    mostrar.innerHTML += `<div class="container">
+    <button id="detalle" type="button" class="btn-pagar">Pagar</button>
+    </div>
+    `;
+    const detalleBoton = document.getElementById('detalle');
+    detalleBoton.onclick = () => {
+    mostrarCarrito.innerHTML = `<div class="container">
+    <h3>Gracias por tu compra</h3>
+    <p class="total">Total: $${total}</p>
+    </div>
+      <button onclick="volverAlInicio()">Volver al Inicio</button>`;
+    }
+    } else {
+    mostrar.innerHTML += `<p>Aún no tienes productos en tu carrito 😢</p>`;
+  }
 }
 
 
 
 
+function volverAlInicio(){
+  carrito = {};
+  nombreInput.value = "";
+  mensajePersonalizado.innerText = "¡Bienvenid@ a nuestra tienda!✌🏼";
+  contenido.innerHTML = "";
+  productos.innerHTML = "";
+
+  const mostrarCarritoDiv = document.getElementById("mostrarCarrito");
+  if (mostrarCarritoDiv){
+    mostrarCarritoDiv.innerHTML = "";
+  } 
+
+  localStorage.clear()
+}
+
+
+
+
+
+
+
+  
