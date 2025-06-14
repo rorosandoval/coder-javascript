@@ -13,5 +13,3 @@
 * **Persistencia de Datos:** ¡No pierdas tu progreso!
     * La tienda **recuerda tu nombre** y **los productos en tu carrito** incluso si cierras la página.
 * **Proceso de Pago Sencillo:** Al finalizar la compra, la página te agradece y te invita a regresar al inicio para una nueva experiencia de compra.
-
-
