@@ -1,0 +1,56 @@
+[
+  {
+    "producto": 1,
+    "nombre": "Monitor 24 pulgadas - Xiaomi",
+    "precio": 120000,
+    "imagen": "./assets/img/monitor.avif"
+  },
+  {
+    "producto": 2,
+    "nombre": "Teclado Gamer - Logitech",
+    "precio": 110000,
+    "imagen": "./assets/img/teclado.jpg"
+  },
+  {
+    "producto": 3,
+    "nombre": "Mouse vertical ergonómico - Logitech",
+    "precio": 70000,
+    "imagen": "./assets/img/mouse.webp"
+  },
+  {
+    "producto": 4,
+    "nombre": "Mouse Pad Gamer 120cm - HP",
+    "precio": 25000,
+    "imagen": "./assets/img/mouse-pad.webp"
+  },
+  {
+    "producto": 5,
+    "nombre": "Audífonos Gamer con micrófono - HyperX",
+    "precio": 95000,
+    "imagen": "./assets/img/audifonos.webp"
+  },
+  {
+    "producto": 6,
+    "nombre": "Webcam Full HD - Logitech",
+    "precio": 60000,
+    "imagen": "./assets/img/webcam.webp"
+  },
+  {
+    "producto": 7,
+    "nombre": "Impresora Multifuncional - Epson",
+    "precio": 180000,
+    "imagen": "./assets/img/impresora.jpg"
+  },
+  {
+    "producto": 8,
+    "nombre": "Disco Duro Externo 1TB - Seagate",
+    "precio": 75000,
+    "imagen": "./assets/img/discoduro.webp"
+  },
+  {
+    "producto": 9,
+    "nombre": "Router Wi-Fi Doble Banda - TP-Link",
+    "precio": 50000,
+    "imagen": "./assets/img/router.jpg"
+  }
+]
